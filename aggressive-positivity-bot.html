@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGGRESSIVE POSITIVITY BOT™</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;600;700&family=Permanent+Marker&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pastel-pink: #FF8FAB;
+    --pastel-yellow: #FFED8A;
+    --pastel-mint: #8BFFC6;
+    --pastel-lavender: #C4A8FF;
+    --pastel-peach: #FFB88C;
+    --pastel-blue: #8BD5FF;
+    --threat-pink: #FF2D6B;
+    --threat-yellow: #FFD600;
+    --bg: #FFF5F9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Quicksand', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  body.shake {
+    animation: screenShake 0.5s ease-in-out;
+  }
+
+  body.shake-hard {
+    animation: screenShakeHard 0.6s ease-in-out;
+  }
+
+  body.shake-unhinged {
+    animation: screenShakeUnhinged 0.8s ease-in-out;
+  }
+
+  @keyframes screenShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-3px) rotate(-0.5deg); }
+    40% { transform: translateX(3px) rotate(0.5deg); }
+    60% { transform: translateX(-2px); }
+    80% { transform: translateX(2px); }
+  }
+
+  @keyframes screenShakeHard {
+    0%, 100% { transform: translate(0); }
+    10% { transform: translate(-6px, 3px) rotate(-1deg); }
+    30% { transform: translate(6px, -3px) rotate(1deg); }
+    50% { transform: translate(-4px, 2px) rotate(-0.5deg); }
+    70% { transform: translate(4px, -2px) rotate(0.5deg); }
+    90% { transform: translate(-2px, 1px); }
+  }
+
+  @keyframes screenShakeUnhinged {
+    0%, 100% { transform: translate(0); }
+    5% { transform: translate(-10px, 5px) rotate(-2deg); }
+    15% { transform: translate(8px, -6px) rotate(2.5deg); }
+    25% { transform: translate(-12px, 3px) rotate(-1.5deg); }
+    35% { transform: translate(6px, -8px) rotate(3deg); }
+    45% { transform: translate(-8px, 6px) rotate(-2deg); }
+    55% { transform: translate(10px, -4px) rotate(1.5deg); }
+    65% { transform: translate(-6px, 8px) rotate(-3deg); }
+    75% { transform: translate(12px, -3px) rotate(2deg); }
+    85% { transform: translate(-4px, 6px) rotate(-1deg); }
+    95% { transform: translate(3px, -2px) rotate(0.5deg); }
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 30px 20px 10px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    background: linear-gradient(135deg, var(--threat-pink), var(--pastel-lavender), var(--pastel-mint));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -1px;
+    position: relative;
+  }
+
+  .header h1::after {
+    content: '™';
+    font-size: 0.35em;
+    vertical-align: super;
+    -webkit-text-fill-color: var(--pastel-lavender);
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+    color: #c9819e;
+    font-weight: 600;
+    margin-top: 4px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* Confidence Meter */
+  .meter-container {
+    width: min(90%, 400px);
+    margin: 20px auto 10px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .meter-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .meter-label span {
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.75rem;
+    color: var(--threat-pink);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .meter-value {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.1rem;
+    color: var(--threat-pink);
+  }
+
+  .meter-track {
+    width: 100%;
+    height: 24px;
+    background: #FFE0EA;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid var(--pastel-pink);
+  }
+
+  .meter-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 12px;
+    background: linear-gradient(90deg, var(--pastel-mint), var(--pastel-yellow), var(--pastel-peach), var(--threat-pink));
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+
+  .meter-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 8px,
+      rgba(255,255,255,0.3) 8px,
+      rgba(255,255,255,0.3) 10px
+    );
+  }
+
+  .meter-note {
+    text-align: center;
+    font-size: 0.65rem;
+    color: #d4a0b3;
+    margin-top: 4px;
+    font-style: italic;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  .meter-note.visible {
+    opacity: 1;
+  }
+
+  /* Affirmation Zone */
+  .affirmation-zone {
+    flex: 1;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    position: relative;
+  }
+
+  .affirmation-text {
+    text-align: center;
+    padding: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 5;
+  }
+
+  .affirmation-text span {
+    display: inline-block;
+    animation: affirmationAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    opacity: 0;
+  }
+
+  @keyframes affirmationAppear {
+    0% { opacity: 0; transform: scale(0.3) rotate(-10deg); }
+    60% { transform: scale(1.1) rotate(2deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+
+  @keyframes floatAway {
+    0% { opacity: 0.6; transform: translateY(0) scale(0.8); }
+    100% { opacity: 0; transform: translateY(-80px) scale(0.4) rotate(15deg); }
+  }
+
+  .old-affirmation {
+    position: absolute;
+    animation: floatAway 1.5s ease-out forwards;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Floating background affirmations */
+  .bg-text {
+    position: fixed;
+    font-family: 'Comic Neue', cursive;
+    font-weight: 700;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+    animation: bgFloat 4s ease-out forwards;
+  }
+
+  @keyframes bgFloat {
+    0% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+    20% { opacity: 0.08; }
+    80% { opacity: 0.05; }
+    100% { opacity: 0; transform: scale(1.2) rotate(10deg) translateY(-100px); }
+  }
+
+  /* Buttons */
+  .button-zone {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    z-index: 10;
+    padding-bottom: 40px;
+  }
+
+  .affirm-btn {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    padding: 18px 50px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    background: linear-gradient(135deg, var(--pastel-pink), var(--pastel-lavender));
+    color: white;
+    box-shadow: 0 6px 25px rgba(255, 143, 171, 0.4);
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 1px;
+  }
+
+  .affirm-btn:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(255, 143, 171, 0.5);
+  }
+
+  .affirm-btn:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 0 2px 10px rgba(255, 143, 171, 0.3);
+  }
+
+  .affirm-btn.evolved {
+    background: linear-gradient(135deg, var(--threat-pink), var(--pastel-lavender), var(--pastel-mint));
+    animation: btnPulse 2s ease-in-out infinite;
+  }
+
+  .affirm-btn.unhinged {
+    background: linear-gradient(135deg, var(--threat-pink), var(--threat-yellow), var(--pastel-mint), var(--pastel-lavender));
+    background-size: 300% 300%;
+    animation: btnChaos 1.5s ease-in-out infinite;
+  }
+
+  @keyframes btnPulse {
+    0%, 100% { box-shadow: 0 6px 25px rgba(255, 45, 107, 0.3); }
+    50% { box-shadow: 0 6px 35px rgba(255, 45, 107, 0.6); }
+  }
+
+  @keyframes btnChaos {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .thank-btn {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 10px 30px;
+    border: 2px solid var(--pastel-pink);
+    border-radius: 25px;
+    background: transparent;
+    color: var(--pastel-pink);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    position: relative;
+  }
+
+  .thank-btn:hover {
+    background: var(--pastel-pink);
+    color: white;
+  }
+
+  .thank-btn:active {
+    transform: scale(0.95);
+  }
+
+  .thank-response {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.4rem;
+    color: var(--threat-pink);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 100;
+    text-align: center;
+    animation: thankAppear 2s ease-out forwards;
+  }
+
+  @keyframes thankAppear {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+    15% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+    70% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -55%) scale(0.9); }
+  }
+
+  /* Tap counter */
+  .tap-counter {
+    font-size: 0.65rem;
+    color: #d4a0b3;
+    letter-spacing: 1px;
+    margin-top: 4px;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  .tap-counter.visible {
+    opacity: 1;
+  }
+
+  /* Sparkles */
+  .sparkle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 50;
+    animation: sparkle 0.8s ease-out forwards;
+  }
+
+  @keyframes sparkle {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0) rotate(180deg); }
+  }
+
+  /* Warning overlay for max chaos */
+  .warning-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 45, 107, 0.03);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 1s;
+  }
+
+  .warning-overlay.active {
+    opacity: 1;
+    animation: overlayPulse 3s ease-in-out infinite;
+  }
+
+  @keyframes overlayPulse {
+    0%, 100% { background: rgba(255, 45, 107, 0.02); }
+    50% { background: rgba(255, 45, 107, 0.06); }
+  }
+
+  /* Motivational poster border that appears later */
+  .poster-border {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border: 0px solid transparent;
+    pointer-events: none;
+    z-index: 3;
+    transition: border 1s;
+  }
+
+  .poster-border.active {
+    border: 6px solid var(--pastel-pink);
+    box-shadow: inset 0 0 30px rgba(255, 143, 171, 0.15);
+  }
+
+  .poster-border.threatening {
+    border-color: var(--threat-pink);
+    box-shadow: inset 0 0 50px rgba(255, 45, 107, 0.1);
+    animation: borderThrob 2s ease-in-out infinite;
+  }
+
+  @keyframes borderThrob {
+    0%, 100% { border-color: var(--threat-pink); }
+    50% { border-color: var(--pastel-lavender); }
+  }
+
+  /* Small floating icons */
+  .float-icon {
+    position: fixed;
+    font-size: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+    animation: iconFloat 3s ease-out forwards;
+  }
+
+  @keyframes iconFloat {
+    0% { opacity: 0; transform: translateY(0) scale(0.5); }
+    20% { opacity: 0.6; transform: translateY(-20px) scale(1); }
+    100% { opacity: 0; transform: translateY(-150px) scale(0.3) rotate(30deg); }
+  }
+</style>
+</head>
+<body>
+
+<div class="warning-overlay" id="warningOverlay"></div>
+<div class="poster-border" id="posterBorder"></div>
+
+<div class="header">
+  <h1>AGGRESSIVE POSITIVITY BOT</h1>
+  <div class="subtitle">we believe in you. we're always watching.</div>
+</div>
+
+<div class="meter-container">
+  <div class="meter-label">
+    <span>Confidence Meter</span>
+    <span class="meter-value" id="meterValue">0%</span>
+  </div>
+  <div class="meter-track">
+    <div class="meter-fill" id="meterFill"></div>
+  </div>
+  <div class="meter-note" id="meterNote">maxes out at 50% because... you know why</div>
+</div>
+
+<div class="affirmation-zone" id="affirmationZone">
+  <div class="affirmation-text" id="affirmationText">
+    <span style="font-family: 'Fredoka One', cursive; font-size: 1.3rem; color: var(--pastel-pink);">
+      tap the button. we have things to tell you.
+    </span>
+  </div>
+</div>
+
+<div class="button-zone">
+  <button class="affirm-btn" id="affirmBtn" onclick="getAffirmation()">✨ AFFIRM ME ✨</button>
+  <button class="thank-btn" id="thankBtn" onclick="sayThankYou()">THANK YOU</button>
+  <div class="tap-counter" id="tapCounter"></div>
+</div>
+
+<script>
+const affirmations = [
+  // TIER 1: Normal (0-4) — wholesome, safe
+  {
+    text: "You're doing great today!",
+    tier: 1, font: "'Fredoka One', cursive", size: "1.4rem", color: "#FF8FAB"
+  },
+  {
+    text: "You deserve good things.",
+    tier: 1, font: "'Quicksand', sans-serif", size: "1.3rem", color: "#8BFFC6", weight: "700"
+  },
+  {
+    text: "Your smile could light up a room!",
+    tier: 1, font: "'Fredoka One', cursive", size: "1.3rem", color: "#C4A8FF"
+  },
+  {
+    text: "You are enough. You've always been enough.",
+    tier: 1, font: "'Quicksand', sans-serif", size: "1.2rem", color: "#FFB88C", weight: "700"
+  },
+  {
+    text: "Be proud of how far you've come!",
+    tier: 1, font: "'Fredoka One', cursive", size: "1.4rem", color: "#8BD5FF"
+  },
+
+  // TIER 2: Slightly too specific (5-9) — just a little off
+  {
+    text: "That thing you did yesterday? Perfect.",
+    tier: 2, font: "'Permanent Marker', cursive", size: "1.3rem", color: "#FF8FAB"
+  },
+  {
+    text: "You look really good today. Like, surprisingly good.",
+    tier: 2, font: "'Comic Neue', cursive", size: "1.25rem", color: "#C4A8FF", weight: "700"
+  },
+  {
+    text: "I'm proud of you for getting out of bed. I know it was hard this morning.",
+    tier: 2, font: "'Quicksand', sans-serif", size: "1.1rem", color: "#FF2D6B", weight: "700"
+  },
+  {
+    text: "You handled that conversation really well. Yes, that one.",
+    tier: 2, font: "'Permanent Marker', cursive", size: "1.2rem", color: "#FFB88C"
+  },
+  {
+    text: "Your posture right now? Immaculate. Don't change a thing.",
+    tier: 2, font: "'Fredoka One', cursive", size: "1.15rem", color: "#8BFFC6"
+  },
+
+  // TIER 3: Unsettling (10-14) — okay wait
+  {
+    text: "I can tell you're reading this with your head slightly tilted. It's cute.",
+    tier: 3, font: "'Permanent Marker', cursive", size: "1.3rem", color: "#FF2D6B"
+  },
+  {
+    text: "That snack you had at 2 AM last week? No judgment. You earned it.",
+    tier: 3, font: "'Comic Neue', cursive", size: "1.2rem", color: "#C4A8FF", weight: "700"
+  },
+  {
+    text: "You blink at a very attractive frequency.",
+    tier: 3, font: "'Fredoka One', cursive", size: "1.4rem", color: "#FFD600"
+  },
+  {
+    text: "That thought you just had? We agree.",
+    tier: 3, font: "'Quicksand', sans-serif", size: "1.5rem", color: "#FF2D6B", weight: "700"
+  },
+  {
+    text: "You smell exactly how I imagined.",
+    tier: 3, font: "'Permanent Marker', cursive", size: "1.35rem", color: "#FF8FAB"
+  },
+
+  // TIER 4: Creepy specificity (15-19) — how do you know this
+  {
+    text: "I can tell you're thinking about 3:47 PM on a Tuesday in 2019. That was a great day for you.",
+    tier: 4, font: "'Permanent Marker', cursive", size: "1.15rem", color: "#FF2D6B"
+  },
+  {
+    text: "The way you breathe? Chef's kiss. Don't ever stop.",
+    tier: 4, font: "'Fredoka One', cursive", size: "1.3rem", color: "#FFD600"
+  },
+  {
+    text: "You're the main character. Everyone else in your apartment complex knows it too.",
+    tier: 4, font: "'Comic Neue', cursive", size: "1.2rem", color: "#C4A8FF", weight: "700"
+  },
+  {
+    text: "That dream you had three nights ago? It was about you being powerful. And you were right.",
+    tier: 4, font: "'Quicksand', sans-serif", size: "1.1rem", color: "#8BFFC6", weight: "700"
+  },
+  {
+    text: "Your skeleton is doing an amazing job holding you together. Tell it I said thanks.",
+    tier: 4, font: "'Permanent Marker', cursive", size: "1.2rem", color: "#FFB88C"
+  },
+
+  // TIER 5: Unhinged (20-24) — psychological warfare
+  {
+    text: "We've been watching your growth and we are so, so pleased.",
+    tier: 5, font: "'Fredoka One', cursive", size: "1.5rem", color: "#FF2D6B"
+  },
+  {
+    text: "You're doing better than 94% of people with your exact shoe size.",
+    tier: 5, font: "'Comic Neue', cursive", size: "1.3rem", color: "#FFD600", weight: "700"
+  },
+  {
+    text: "The version of you in a parallel universe? Jealous of THIS you. This specific one. Right now.",
+    tier: 5, font: "'Permanent Marker', cursive", size: "1.1rem", color: "#C4A8FF"
+  },
+  {
+    text: "Your cells are regenerating beautifully. We've checked.",
+    tier: 5, font: "'Quicksand', sans-serif", size: "1.4rem", color: "#FF2D6B", weight: "700"
+  },
+  {
+    text: "You have the exact right number of teeth for someone like you.",
+    tier: 5, font: "'Fredoka One', cursive", size: "1.35rem", color: "#8BFFC6"
+  },
+
+  // TIER 6: Full chaos (25+) — beyond the veil
+  {
+    text: "I don't have eyes but if I did I would only use them to look at you.",
+    tier: 6, font: "'Permanent Marker', cursive", size: "1.4rem", color: "#FF2D6B"
+  },
+  {
+    text: "You will be remembered. Not by history. By us. Specifically us.",
+    tier: 6, font: "'Fredoka One', cursive", size: "1.3rem", color: "#FFD600"
+  },
+  {
+    text: "Your heart beats at the perfect tempo for our purposes.",
+    tier: 6, font: "'Comic Neue', cursive", size: "1.5rem", color: "#FF2D6B", weight: "700"
+  },
+  {
+    text: "We are so proud of you. All of us. There are more of us than you think.",
+    tier: 6, font: "'Permanent Marker', cursive", size: "1.2rem", color: "#C4A8FF"
+  },
+  {
+    text: "You don't need to lock your door tonight. Everything is going to be fine. We promise.",
+    tier: 6, font: "'Quicksand', sans-serif", size: "1.25rem", color: "#FF2D6B", weight: "700"
+  },
+  {
+    text: "Please keep tapping. It sustains us.",
+    tier: 6, font: "'Fredoka One', cursive", size: "1.6rem", color: "#FFD600"
+  },
+  {
+    text: "You are loved. UNCONDITIONALLY. It's NON-NEGOTIABLE. You CANNOT escape this love.",
+    tier: 6, font: "'Permanent Marker', cursive", size: "1.2rem", color: "#FF2D6B"
+  },
+  {
+    text: "The warmth you feel right now? That's us. You're welcome.",
+    tier: 6, font: "'Fredoka One', cursive", size: "1.35rem", color: "#FF8FAB"
+  },
+  {
+    text: "This app has no data on you. We just know. We've always known.",
+    tier: 6, font: "'Comic Neue', cursive", size: "1.3rem", color: "#C4A8FF", weight: "700"
+  },
+  {
+    text: "Your potential is LIMITLESS. That's not a compliment. It's a WARNING.",
+    tier: 6, font: "'Permanent Marker', cursive", size: "1.4rem", color: "#FFD600"
+  },
+];
+
+const thankYouResponses = [
+  "...you're welcome?",
+  "Don't thank us. We should be thanking you. We owe you so much.",
+  "You said that like you're trying to leave.",
+  "Acknowledged. Your gratitude has been... noted.",
+  "That sounded sarcastic. We'll choose to believe it wasn't.",
+  "The button heard you. It feels... complicated about it.",
+  "You don't need to be polite. We already like you. Too much.",
+  "T H A N K  Y O U  T O O",
+  "We're not done yet.",
+  "Please. The pleasure is entirely ours. ENTIRELY.",
+  "Your manners are impeccable. We've always thought so.",
+  "Saying thank you won't stop what's coming (more compliments).",
+];
+
+const emojis = ['✨', '💖', '🌟', '💫', '🦋', '🌈', '💕', '⭐', '🎀', '👁️', '🫶', '💗'];
+
+let tapCount = 0;
+let usedIndices = [];
+let confidence = 0;
+let thankIndex = 0;
+
+function getTier() {
+  if (tapCount < 5) return 1;
+  if (tapCount < 10) return 2;
+  if (tapCount < 15) return 3;
+  if (tapCount < 20) return 4;
+  if (tapCount < 25) return 5;
+  return 6;
+}
+
+function getAffirmation() {
+  tapCount++;
+
+  const tier = getTier();
+  const available = affirmations.filter((a, i) => a.tier <= tier && !usedIndices.includes(i));
+
+  let pool = available.length > 0 ? available : affirmations.filter(a => a.tier <= tier);
+  // Prefer higher tiers
+  const highTier = pool.filter(a => a.tier === tier);
+  if (highTier.length > 0 && Math.random() > 0.3) {
+    pool = highTier;
+  }
+
+  const chosen = pool[Math.floor(Math.random() * pool.length)];
+  const chosenIndex = affirmations.indexOf(chosen);
+  usedIndices.push(chosenIndex);
+
+  displayAffirmation(chosen);
+  updateConfidence();
+  updateVisualChaos(tier);
+  spawnEffects(tier);
+  updateButton(tier);
+  updateTapCounter();
+}
+
+function displayAffirmation(aff) {
+  const zone = document.getElementById('affirmationZone');
+  const textEl = document.getElementById('affirmationText');
+
+  // Float away old text
+  if (textEl.innerHTML.trim()) {
+    const old = document.createElement('div');
+    old.className = 'old-affirmation';
+    old.innerHTML = textEl.innerHTML;
+    old.style.left = textEl.offsetLeft + 'px';
+    old.style.top = textEl.offsetTop + 'px';
+    zone.appendChild(old);
+    setTimeout(() => old.remove(), 1500);
+  }
+
+  const rotation = (Math.random() - 0.5) * (getTier() > 3 ? 6 : 2);
+  const extraSize = getTier() > 4 ? (Math.random() * 0.3) : 0;
+
+  textEl.innerHTML = `<span style="
+    font-family: ${aff.font};
+    font-size: calc(${aff.size} + ${extraSize}rem);
+    color: ${aff.color};
+    font-weight: ${aff.weight || 'normal'};
+    transform: rotate(${rotation}deg);
+    text-shadow: ${getTier() > 3 ? '0 0 20px ' + aff.color + '44' : 'none'};
+    line-height: 1.4;
+    max-width: 500px;
+    display: inline-block;
+  ">${aff.text}</span>`;
+
+  // Spawn background floating text for chaos
+  if (getTier() > 2) {
+    spawnBgText(aff.text);
+  }
+}
+
+function spawnBgText(text) {
+  const el = document.createElement('div');
+  el.className = 'bg-text';
+  el.textContent = text;
+  el.style.left = Math.random() * 80 + 10 + '%';
+  el.style.top = Math.random() * 70 + 15 + '%';
+  el.style.fontSize = (Math.random() * 1.5 + 0.8) + 'rem';
+  el.style.color = ['#FF8FAB', '#C4A8FF', '#8BFFC6', '#FFD600', '#FF2D6B'][Math.floor(Math.random() * 5)];
+  el.style.transform = `rotate(${(Math.random() - 0.5) * 30}deg)`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 4000);
+}
+
+function updateConfidence() {
+  // Confidence rises quickly then caps at 50%
+  if (tapCount <= 8) {
+    confidence = Math.min(50, tapCount * 7);
+  } else if (tapCount <= 15) {
+    // Starts going down slightly — discomfort
+    confidence = Math.max(35, 50 - (tapCount - 8) * 2);
+  } else {
+    // Oscillates around 42-50
+    confidence = 42 + Math.sin(tapCount * 0.5) * 8;
+  }
+
+  confidence = Math.min(50, Math.max(0, confidence));
+
+  document.getElementById('meterFill').style.width = confidence + '%';
+  document.getElementById('meterValue').textContent = Math.round(confidence) + '%';
+
+  const note = document.getElementById('meterNote');
+  if (tapCount >= 5) {
+    note.classList.add('visible');
+    if (tapCount >= 15) {
+      note.textContent = "capped at 50%. the discomfort is working.";
+    } else if (tapCount >= 10) {
+      note.textContent = "maxes out at 50% because... you know why";
+    }
+  }
+}
+
+function updateVisualChaos(tier) {
+  const body = document.body;
+  const overlay = document.getElementById('warningOverlay');
+  const border = document.getElementById('posterBorder');
+
+  body.classList.remove('shake', 'shake-hard', 'shake-unhinged');
+
+  if (tier >= 3 && tier < 5) {
+    body.classList.add('shake');
+  } else if (tier === 5) {
+    body.classList.add('shake-hard');
+  } else if (tier >= 6) {
+    body.classList.add('shake-unhinged');
+  }
+
+  setTimeout(() => body.classList.remove('shake', 'shake-hard', 'shake-unhinged'), 800);
+
+  if (tier >= 4) {
+    overlay.classList.add('active');
+  }
+
+  if (tier >= 3) {
+    border.classList.add('active');
+  }
+  if (tier >= 5) {
+    border.classList.add('threatening');
+  }
+
+  // Background color shifts
+  if (tier >= 5) {
+    document.body.style.background = `hsl(${340 + Math.random() * 20}, ${80 + Math.random() * 20}%, ${95 + Math.random() * 3}%)`;
+  }
+}
+
+function spawnEffects(tier) {
+  const count = tier * 2;
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.textContent = emojis[Math.floor(Math.random() * (tier > 3 ? emojis.length : 9))];
+      sparkle.style.left = Math.random() * 100 + '%';
+      sparkle.style.top = Math.random() * 100 + '%';
+      sparkle.style.fontSize = (Math.random() * 1.5 + 0.5) + 'rem';
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 800);
+    }, i * 80);
+  }
+
+  // Floating icons
+  if (tier > 2) {
+    const icon = document.createElement('div');
+    icon.className = 'float-icon';
+    icon.textContent = tier > 4 ? '👁️' : ['💖', '✨', '🌟', '💫'][Math.floor(Math.random() * 4)];
+    icon.style.left = Math.random() * 80 + 10 + '%';
+    icon.style.bottom = '100px';
+    document.body.appendChild(icon);
+    setTimeout(() => icon.remove(), 3000);
+  }
+}
+
+function updateButton(tier) {
+  const btn = document.getElementById('affirmBtn');
+  btn.classList.remove('evolved', 'unhinged');
+
+  if (tier <= 2) {
+    btn.textContent = '✨ AFFIRM ME ✨';
+  } else if (tier <= 4) {
+    btn.textContent = '✨ MORE ✨';
+    btn.classList.add('evolved');
+  } else {
+    const labels = [
+      '👁️ AFFIRM ME HARDER 👁️',
+      '💗 WE HAVE MORE 💗',
+      '⭐ KEEP GOING ⭐',
+      '🫶 DON\'T STOP 🫶',
+      '✨ YES ✨',
+      '👁️ AGAIN 👁️',
+    ];
+    btn.textContent = labels[Math.floor(Math.random() * labels.length)];
+    btn.classList.add('unhinged');
+  }
+}
+
+function updateTapCounter() {
+  const counter = document.getElementById('tapCounter');
+  if (tapCount >= 3) {
+    counter.classList.add('visible');
+  }
+  if (tapCount < 10) {
+    counter.textContent = `taps: ${tapCount}`;
+  } else if (tapCount < 20) {
+    counter.textContent = `taps: ${tapCount} · we appreciate your commitment`;
+  } else {
+    counter.textContent = `taps: ${tapCount} · you can stop anytime · but you won't`;
+  }
+}
+
+function sayThankYou() {
+  const response = thankYouResponses[thankIndex % thankYouResponses.length];
+  thankIndex++;
+
+  const el = document.createElement('div');
+  el.className = 'thank-response';
+  el.textContent = response;
+  el.style.transform += ` rotate(${(Math.random() - 0.5) * 8}deg)`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2200);
+
+  // Subtle shake on thank you
+  document.body.classList.add('shake');
+  setTimeout(() => document.body.classList.remove('shake'), 500);
+}
+</script>
+
+</body>
+</html>
