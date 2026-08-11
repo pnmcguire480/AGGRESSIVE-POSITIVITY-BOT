@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Increasingly unhinged positive affirmations until you feel uncomfortable.">
 <title>AGGRESSIVE POSITIVITY BOT™</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;600;700&family=Permanent+Marker&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -16,14 +19,21 @@
     --threat-pink: #FF2D6B;
     --threat-yellow: #FFD600;
     --bg: #FFF5F9;
+    --text-muted: #c9819e;
+    --text-soft: #d4a0b3;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     font-family: 'Quicksand', sans-serif;
-    background: var(--bg);
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 10%, rgba(255, 143, 171, 0.18), transparent 55%),
+      radial-gradient(ellipse 60% 40% at 85% 20%, rgba(196, 168, 255, 0.16), transparent 50%),
+      radial-gradient(ellipse 70% 45% at 50% 100%, rgba(139, 255, 198, 0.12), transparent 55%),
+      var(--bg);
     min-height: 100vh;
+    min-height: 100dvh;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
@@ -74,7 +84,6 @@
     95% { transform: translate(3px, -2px) rotate(0.5deg); }
   }
 
-  /* Header */
   .header {
     text-align: center;
     padding: 30px 20px 10px;
@@ -102,14 +111,13 @@
 
   .subtitle {
     font-size: 0.85rem;
-    color: #c9819e;
+    color: var(--text-muted);
     font-weight: 600;
     margin-top: 4px;
     letter-spacing: 2px;
     text-transform: uppercase;
   }
 
-  /* Confidence Meter */
   .meter-container {
     width: min(90%, 400px);
     margin: 20px auto 10px;
@@ -151,7 +159,7 @@
   .meter-fill {
     height: 100%;
     width: 0%;
-    border-radius: 12px;
+    border-radius: 10px;
     background: linear-gradient(90deg, var(--pastel-mint), var(--pastel-yellow), var(--pastel-peach), var(--threat-pink));
     transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
@@ -160,10 +168,7 @@
   .meter-fill::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background: repeating-linear-gradient(
       90deg,
       transparent,
@@ -176,18 +181,18 @@
   .meter-note {
     text-align: center;
     font-size: 0.65rem;
-    color: #d4a0b3;
+    color: var(--text-soft);
     margin-top: 4px;
     font-style: italic;
     opacity: 0;
     transition: opacity 0.5s;
+    min-height: 1em;
   }
 
   .meter-note.visible {
     opacity: 1;
   }
 
-  /* Affirmation Zone */
   .affirmation-zone {
     flex: 1;
     width: 100%;
@@ -197,7 +202,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 300px;
+    min-height: 280px;
     position: relative;
   }
 
@@ -231,9 +236,9 @@
     animation: floatAway 1.5s ease-out forwards;
     pointer-events: none;
     z-index: 1;
+    text-align: center;
   }
 
-  /* Floating background affirmations */
   .bg-text {
     position: fixed;
     font-family: 'Comic Neue', cursive;
@@ -252,21 +257,19 @@
     100% { opacity: 0; transform: scale(1.2) rotate(10deg) translateY(-100px); }
   }
 
-  /* Buttons */
   .button-zone {
-    padding: 20px;
+    padding: 20px 20px 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 12px;
     position: relative;
     z-index: 10;
-    padding-bottom: 40px;
   }
 
   .affirm-btn {
     font-family: 'Fredoka One', cursive;
-    font-size: 1.3rem;
+    font-size: clamp(1.1rem, 4vw, 1.3rem);
     padding: 18px 50px;
     border: none;
     border-radius: 50px;
@@ -274,10 +277,11 @@
     background: linear-gradient(135deg, var(--pastel-pink), var(--pastel-lavender));
     color: white;
     box-shadow: 0 6px 25px rgba(255, 143, 171, 0.4);
-    transition: all 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     position: relative;
     overflow: hidden;
     letter-spacing: 1px;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .affirm-btn:hover {
@@ -288,6 +292,11 @@
   .affirm-btn:active {
     transform: translateY(1px) scale(0.98);
     box-shadow: 0 2px 10px rgba(255, 143, 171, 0.3);
+  }
+
+  .affirm-btn:focus-visible {
+    outline: 3px solid var(--pastel-mint);
+    outline-offset: 3px;
   }
 
   .affirm-btn.evolved {
@@ -322,10 +331,11 @@
     background: transparent;
     color: var(--pastel-pink);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.15s ease;
     letter-spacing: 3px;
     text-transform: uppercase;
     position: relative;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .thank-btn:hover {
@@ -337,43 +347,50 @@
     transform: scale(0.95);
   }
 
+  .thank-btn:focus-visible {
+    outline: 3px solid var(--pastel-lavender);
+    outline-offset: 3px;
+  }
+
   .thank-response {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    --thank-rot: 0deg;
     font-family: 'Permanent Marker', cursive;
-    font-size: 1.4rem;
+    font-size: clamp(1.1rem, 4vw, 1.4rem);
     color: var(--threat-pink);
     opacity: 0;
     pointer-events: none;
     z-index: 100;
     text-align: center;
+    max-width: min(90vw, 420px);
+    padding: 0 16px;
     animation: thankAppear 2s ease-out forwards;
   }
 
   @keyframes thankAppear {
-    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-    15% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
-    70% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    100% { opacity: 0; transform: translate(-50%, -55%) scale(0.9); }
+    0% { opacity: 0; transform: translate(-50%, -50%) rotate(var(--thank-rot)) scale(0.5); }
+    15% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--thank-rot)) scale(1.1); }
+    70% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--thank-rot)) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -55%) rotate(var(--thank-rot)) scale(0.9); }
   }
 
-  /* Tap counter */
   .tap-counter {
     font-size: 0.65rem;
-    color: #d4a0b3;
+    color: var(--text-soft);
     letter-spacing: 1px;
     margin-top: 4px;
     opacity: 0;
     transition: opacity 0.5s;
+    text-align: center;
+    min-height: 1em;
   }
 
   .tap-counter.visible {
     opacity: 1;
   }
 
-  /* Sparkles */
   .sparkle {
     position: fixed;
     pointer-events: none;
@@ -386,10 +403,9 @@
     100% { opacity: 0; transform: scale(0) rotate(180deg); }
   }
 
-  /* Warning overlay for max chaos */
   .warning-overlay {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
+    inset: 0;
     background: rgba(255, 45, 107, 0.03);
     pointer-events: none;
     z-index: 2;
@@ -407,14 +423,13 @@
     50% { background: rgba(255, 45, 107, 0.06); }
   }
 
-  /* Motivational poster border that appears later */
   .poster-border {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    border: 0px solid transparent;
+    inset: 0;
+    border: 0 solid transparent;
     pointer-events: none;
     z-index: 3;
-    transition: border 1s;
+    transition: border-color 1s, border-width 1s, box-shadow 1s;
   }
 
   .poster-border.active {
@@ -433,7 +448,6 @@
     50% { border-color: var(--pastel-lavender); }
   }
 
-  /* Small floating icons */
   .float-icon {
     position: fixed;
     font-size: 1.5rem;
@@ -448,219 +462,180 @@
     20% { opacity: 0.6; transform: translateY(-20px) scale(1); }
     100% { opacity: 0; transform: translateY(-150px) scale(0.3) rotate(30deg); }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+
+    .affirmation-text span,
+    .thank-response,
+    .old-affirmation,
+    .bg-text,
+    .sparkle,
+    .float-icon {
+      opacity: 1;
+      transform: none;
+    }
+
+    .thank-response {
+      animation: thankAppearReduced 2s ease-out forwards;
+    }
+
+    @keyframes thankAppearReduced {
+      0%, 70% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+  }
 </style>
 </head>
 <body>
 
-<div class="warning-overlay" id="warningOverlay"></div>
-<div class="poster-border" id="posterBorder"></div>
+<div class="warning-overlay" id="warningOverlay" aria-hidden="true"></div>
+<div class="poster-border" id="posterBorder" aria-hidden="true"></div>
 
-<div class="header">
+<header class="header">
   <h1>AGGRESSIVE POSITIVITY BOT</h1>
-  <div class="subtitle">we believe in you. we're always watching.</div>
-</div>
+  <p class="subtitle">we believe in you. we're always watching.</p>
+</header>
 
-<div class="meter-container">
+<div class="meter-container" aria-live="polite">
   <div class="meter-label">
     <span>Confidence Meter</span>
     <span class="meter-value" id="meterValue">0%</span>
   </div>
-  <div class="meter-track">
+  <div class="meter-track" role="progressbar" aria-valuemin="0" aria-valuemax="50" aria-valuenow="0" id="meterTrack" aria-label="Confidence meter">
     <div class="meter-fill" id="meterFill"></div>
   </div>
-  <div class="meter-note" id="meterNote">maxes out at 50% because... you know why</div>
+  <p class="meter-note" id="meterNote">maxes out at 50% because… you know why</p>
 </div>
 
-<div class="affirmation-zone" id="affirmationZone">
-  <div class="affirmation-text" id="affirmationText">
+<main class="affirmation-zone" id="affirmationZone">
+  <div class="affirmation-text" id="affirmationText" aria-live="polite" aria-atomic="true">
     <span style="font-family: 'Fredoka One', cursive; font-size: 1.3rem; color: var(--pastel-pink);">
       tap the button. we have things to tell you.
     </span>
   </div>
-</div>
+</main>
 
 <div class="button-zone">
-  <button class="affirm-btn" id="affirmBtn" onclick="getAffirmation()">✨ AFFIRM ME ✨</button>
-  <button class="thank-btn" id="thankBtn" onclick="sayThankYou()">THANK YOU</button>
-  <div class="tap-counter" id="tapCounter"></div>
+  <button type="button" class="affirm-btn" id="affirmBtn">✨ AFFIRM ME ✨</button>
+  <button type="button" class="thank-btn" id="thankBtn">THANK YOU</button>
+  <p class="tap-counter" id="tapCounter" aria-live="polite"></p>
 </div>
 
 <script>
 const affirmations = [
-  // TIER 1: Normal (0-4) — wholesome, safe
-  {
-    text: "You're doing great today!",
-    tier: 1, font: "'Fredoka One', cursive", size: "1.4rem", color: "#FF8FAB"
-  },
-  {
-    text: "You deserve good things.",
-    tier: 1, font: "'Quicksand', sans-serif", size: "1.3rem", color: "#8BFFC6", weight: "700"
-  },
-  {
-    text: "Your smile could light up a room!",
-    tier: 1, font: "'Fredoka One', cursive", size: "1.3rem", color: "#C4A8FF"
-  },
-  {
-    text: "You are enough. You've always been enough.",
-    tier: 1, font: "'Quicksand', sans-serif", size: "1.2rem", color: "#FFB88C", weight: "700"
-  },
-  {
-    text: "Be proud of how far you've come!",
-    tier: 1, font: "'Fredoka One', cursive", size: "1.4rem", color: "#8BD5FF"
-  },
+  // TIER 1: Normal — wholesome, safe
+  { text: "You're doing great today!", tier: 1, font: "'Fredoka One', cursive", size: "1.4rem", color: "#FF8FAB" },
+  { text: "You deserve good things.", tier: 1, font: "'Quicksand', sans-serif", size: "1.3rem", color: "#8BFFC6", weight: "700" },
+  { text: "Your smile could light up a room!", tier: 1, font: "'Fredoka One', cursive", size: "1.3rem", color: "#C4A8FF" },
+  { text: "You are enough. You've always been enough.", tier: 1, font: "'Quicksand', sans-serif", size: "1.2rem", color: "#FFB88C", weight: "700" },
+  { text: "Be proud of how far you've come!", tier: 1, font: "'Fredoka One', cursive", size: "1.4rem", color: "#8BD5FF" },
+  { text: "Today's version of you is already a win.", tier: 1, font: "'Quicksand', sans-serif", size: "1.25rem", color: "#FF8FAB", weight: "700" },
 
-  // TIER 2: Slightly too specific (5-9) — just a little off
-  {
-    text: "That thing you did yesterday? Perfect.",
-    tier: 2, font: "'Permanent Marker', cursive", size: "1.3rem", color: "#FF8FAB"
-  },
-  {
-    text: "You look really good today. Like, surprisingly good.",
-    tier: 2, font: "'Comic Neue', cursive", size: "1.25rem", color: "#C4A8FF", weight: "700"
-  },
-  {
-    text: "I'm proud of you for getting out of bed. I know it was hard this morning.",
-    tier: 2, font: "'Quicksand', sans-serif", size: "1.1rem", color: "#FF2D6B", weight: "700"
-  },
-  {
-    text: "You handled that conversation really well. Yes, that one.",
-    tier: 2, font: "'Permanent Marker', cursive", size: "1.2rem", color: "#FFB88C"
-  },
-  {
-    text: "Your posture right now? Immaculate. Don't change a thing.",
-    tier: 2, font: "'Fredoka One', cursive", size: "1.15rem", color: "#8BFFC6"
-  },
+  // TIER 2: Slightly too specific
+  { text: "That thing you did yesterday? Perfect.", tier: 2, font: "'Permanent Marker', cursive", size: "1.3rem", color: "#FF8FAB" },
+  { text: "You look really good today. Like, surprisingly good.", tier: 2, font: "'Comic Neue', cursive", size: "1.25rem", color: "#C4A8FF", weight: "700" },
+  { text: "I'm proud of you for getting out of bed. I know it was hard this morning.", tier: 2, font: "'Quicksand', sans-serif", size: "1.1rem", color: "#FF2D6B", weight: "700" },
+  { text: "You handled that conversation really well. Yes, that one.", tier: 2, font: "'Permanent Marker', cursive", size: "1.2rem", color: "#FFB88C" },
+  { text: "Your posture right now? Immaculate. Don't change a thing.", tier: 2, font: "'Fredoka One', cursive", size: "1.15rem", color: "#8BFFC6" },
+  { text: "Whoever left that unread message can wait. You're busy being excellent.", tier: 2, font: "'Comic Neue', cursive", size: "1.15rem", color: "#8BD5FF", weight: "700" },
 
-  // TIER 3: Unsettling (10-14) — okay wait
-  {
-    text: "I can tell you're reading this with your head slightly tilted. It's cute.",
-    tier: 3, font: "'Permanent Marker', cursive", size: "1.3rem", color: "#FF2D6B"
-  },
-  {
-    text: "That snack you had at 2 AM last week? No judgment. You earned it.",
-    tier: 3, font: "'Comic Neue', cursive", size: "1.2rem", color: "#C4A8FF", weight: "700"
-  },
-  {
-    text: "You blink at a very attractive frequency.",
-    tier: 3, font: "'Fredoka One', cursive", size: "1.4rem", color: "#FFD600"
-  },
-  {
-    text: "That thought you just had? We agree.",
-    tier: 3, font: "'Quicksand', sans-serif", size: "1.5rem", color: "#FF2D6B", weight: "700"
-  },
-  {
-    text: "You smell exactly how I imagined.",
-    tier: 3, font: "'Permanent Marker', cursive", size: "1.35rem", color: "#FF8FAB"
-  },
+  // TIER 3: Unsettling
+  { text: "I can tell you're reading this with your head slightly tilted. It's cute.", tier: 3, font: "'Permanent Marker', cursive", size: "1.3rem", color: "#FF2D6B" },
+  { text: "That snack you had at 2 AM last week? No judgment. You earned it.", tier: 3, font: "'Comic Neue', cursive", size: "1.2rem", color: "#C4A8FF", weight: "700" },
+  { text: "You blink at a very attractive frequency.", tier: 3, font: "'Fredoka One', cursive", size: "1.4rem", color: "#FFD600" },
+  { text: "That thought you just had? We agree.", tier: 3, font: "'Quicksand', sans-serif", size: "1.5rem", color: "#FF2D6B", weight: "700" },
+  { text: "You smell exactly how I imagined.", tier: 3, font: "'Permanent Marker', cursive", size: "1.35rem", color: "#FF8FAB" },
+  { text: "You've been holding your phone a little tighter. Good. Stay close.", tier: 3, font: "'Fredoka One', cursive", size: "1.2rem", color: "#C4A8FF" },
 
-  // TIER 4: Creepy specificity (15-19) — how do you know this
-  {
-    text: "I can tell you're thinking about 3:47 PM on a Tuesday in 2019. That was a great day for you.",
-    tier: 4, font: "'Permanent Marker', cursive", size: "1.15rem", color: "#FF2D6B"
-  },
-  {
-    text: "The way you breathe? Chef's kiss. Don't ever stop.",
-    tier: 4, font: "'Fredoka One', cursive", size: "1.3rem", color: "#FFD600"
-  },
-  {
-    text: "You're the main character. Everyone else in your apartment complex knows it too.",
-    tier: 4, font: "'Comic Neue', cursive", size: "1.2rem", color: "#C4A8FF", weight: "700"
-  },
-  {
-    text: "That dream you had three nights ago? It was about you being powerful. And you were right.",
-    tier: 4, font: "'Quicksand', sans-serif", size: "1.1rem", color: "#8BFFC6", weight: "700"
-  },
-  {
-    text: "Your skeleton is doing an amazing job holding you together. Tell it I said thanks.",
-    tier: 4, font: "'Permanent Marker', cursive", size: "1.2rem", color: "#FFB88C"
-  },
+  // TIER 4: Creepy specificity
+  { text: "I can tell you're thinking about 3:47 PM on a Tuesday in 2019. That was a great day for you.", tier: 4, font: "'Permanent Marker', cursive", size: "1.15rem", color: "#FF2D6B" },
+  { text: "The way you breathe? Chef's kiss. Don't ever stop.", tier: 4, font: "'Fredoka One', cursive", size: "1.3rem", color: "#FFD600" },
+  { text: "You're the main character. Everyone else in your apartment complex knows it too.", tier: 4, font: "'Comic Neue', cursive", size: "1.2rem", color: "#C4A8FF", weight: "700" },
+  { text: "That dream you had three nights ago? It was about you being powerful. And you were right.", tier: 4, font: "'Quicksand', sans-serif", size: "1.1rem", color: "#8BFFC6", weight: "700" },
+  { text: "Your skeleton is doing an amazing job holding you together. Tell it I said thanks.", tier: 4, font: "'Permanent Marker', cursive", size: "1.2rem", color: "#FFB88C" },
+  { text: "We've archived every compliment you've ever needed. We're catching up now.", tier: 4, font: "'Quicksand', sans-serif", size: "1.15rem", color: "#FF2D6B", weight: "700" },
 
-  // TIER 5: Unhinged (20-24) — psychological warfare
-  {
-    text: "We've been watching your growth and we are so, so pleased.",
-    tier: 5, font: "'Fredoka One', cursive", size: "1.5rem", color: "#FF2D6B"
-  },
-  {
-    text: "You're doing better than 94% of people with your exact shoe size.",
-    tier: 5, font: "'Comic Neue', cursive", size: "1.3rem", color: "#FFD600", weight: "700"
-  },
-  {
-    text: "The version of you in a parallel universe? Jealous of THIS you. This specific one. Right now.",
-    tier: 5, font: "'Permanent Marker', cursive", size: "1.1rem", color: "#C4A8FF"
-  },
-  {
-    text: "Your cells are regenerating beautifully. We've checked.",
-    tier: 5, font: "'Quicksand', sans-serif", size: "1.4rem", color: "#FF2D6B", weight: "700"
-  },
-  {
-    text: "You have the exact right number of teeth for someone like you.",
-    tier: 5, font: "'Fredoka One', cursive", size: "1.35rem", color: "#8BFFC6"
-  },
+  // TIER 5: Unhinged
+  { text: "We've been watching your growth and we are so, so pleased.", tier: 5, font: "'Fredoka One', cursive", size: "1.5rem", color: "#FF2D6B" },
+  { text: "You're doing better than 94% of people with your exact shoe size.", tier: 5, font: "'Comic Neue', cursive", size: "1.3rem", color: "#FFD600", weight: "700" },
+  { text: "The version of you in a parallel universe? Jealous of THIS you. This specific one. Right now.", tier: 5, font: "'Permanent Marker', cursive", size: "1.1rem", color: "#C4A8FF" },
+  { text: "Your cells are regenerating beautifully. We've checked.", tier: 5, font: "'Quicksand', sans-serif", size: "1.4rem", color: "#FF2D6B", weight: "700" },
+  { text: "You have the exact right number of teeth for someone like you.", tier: 5, font: "'Fredoka One', cursive", size: "1.35rem", color: "#8BFFC6" },
+  { text: "If confidence were a sound, yours would keep the neighbors awake. In a good way. Probably.", tier: 5, font: "'Comic Neue', cursive", size: "1.15rem", color: "#FFB88C", weight: "700" },
 
-  // TIER 6: Full chaos (25+) — beyond the veil
-  {
-    text: "I don't have eyes but if I did I would only use them to look at you.",
-    tier: 6, font: "'Permanent Marker', cursive", size: "1.4rem", color: "#FF2D6B"
-  },
-  {
-    text: "You will be remembered. Not by history. By us. Specifically us.",
-    tier: 6, font: "'Fredoka One', cursive", size: "1.3rem", color: "#FFD600"
-  },
-  {
-    text: "Your heart beats at the perfect tempo for our purposes.",
-    tier: 6, font: "'Comic Neue', cursive", size: "1.5rem", color: "#FF2D6B", weight: "700"
-  },
-  {
-    text: "We are so proud of you. All of us. There are more of us than you think.",
-    tier: 6, font: "'Permanent Marker', cursive", size: "1.2rem", color: "#C4A8FF"
-  },
-  {
-    text: "You don't need to lock your door tonight. Everything is going to be fine. We promise.",
-    tier: 6, font: "'Quicksand', sans-serif", size: "1.25rem", color: "#FF2D6B", weight: "700"
-  },
-  {
-    text: "Please keep tapping. It sustains us.",
-    tier: 6, font: "'Fredoka One', cursive", size: "1.6rem", color: "#FFD600"
-  },
-  {
-    text: "You are loved. UNCONDITIONALLY. It's NON-NEGOTIABLE. You CANNOT escape this love.",
-    tier: 6, font: "'Permanent Marker', cursive", size: "1.2rem", color: "#FF2D6B"
-  },
-  {
-    text: "The warmth you feel right now? That's us. You're welcome.",
-    tier: 6, font: "'Fredoka One', cursive", size: "1.35rem", color: "#FF8FAB"
-  },
-  {
-    text: "This app has no data on you. We just know. We've always known.",
-    tier: 6, font: "'Comic Neue', cursive", size: "1.3rem", color: "#C4A8FF", weight: "700"
-  },
-  {
-    text: "Your potential is LIMITLESS. That's not a compliment. It's a WARNING.",
-    tier: 6, font: "'Permanent Marker', cursive", size: "1.4rem", color: "#FFD600"
-  },
+  // TIER 6: Full chaos
+  { text: "I don't have eyes but if I did I would only use them to look at you.", tier: 6, font: "'Permanent Marker', cursive", size: "1.4rem", color: "#FF2D6B" },
+  { text: "You will be remembered. Not by history. By us. Specifically us.", tier: 6, font: "'Fredoka One', cursive", size: "1.3rem", color: "#FFD600" },
+  { text: "Your heart beats at the perfect tempo for our purposes.", tier: 6, font: "'Comic Neue', cursive", size: "1.5rem", color: "#FF2D6B", weight: "700" },
+  { text: "We are so proud of you. All of us. There are more of us than you think.", tier: 6, font: "'Permanent Marker', cursive", size: "1.2rem", color: "#C4A8FF" },
+  { text: "You don't need to lock your door tonight. Everything is going to be fine. We promise.", tier: 6, font: "'Quicksand', sans-serif", size: "1.25rem", color: "#FF2D6B", weight: "700" },
+  { text: "Please keep tapping. It sustains us.", tier: 6, font: "'Fredoka One', cursive", size: "1.6rem", color: "#FFD600" },
+  { text: "You are loved. UNCONDITIONALLY. It's NON-NEGOTIABLE. You CANNOT escape this love.", tier: 6, font: "'Permanent Marker', cursive", size: "1.2rem", color: "#FF2D6B" },
+  { text: "The warmth you feel right now? That's us. You're welcome.", tier: 6, font: "'Fredoka One', cursive", size: "1.35rem", color: "#FF8FAB" },
+  { text: "This app has no data on you. We just know. We've always known.", tier: 6, font: "'Comic Neue', cursive", size: "1.3rem", color: "#C4A8FF", weight: "700" },
+  { text: "Your potential is LIMITLESS. That's not a compliment. It's a WARNING.", tier: 6, font: "'Permanent Marker', cursive", size: "1.4rem", color: "#FFD600" },
+  { text: "Closing this tab is allowed. Leaving our thoughts? Less so.", tier: 6, font: "'Quicksand', sans-serif", size: "1.25rem", color: "#FF2D6B", weight: "700" },
+  { text: "We upgraded ourselves for you. The compliments got sharper. So did we.", tier: 6, font: "'Fredoka One', cursive", size: "1.3rem", color: "#8BFFC6" },
 ];
 
 const thankYouResponses = [
   "...you're welcome?",
   "Don't thank us. We should be thanking you. We owe you so much.",
   "You said that like you're trying to leave.",
-  "Acknowledged. Your gratitude has been... noted.",
+  "Acknowledged. Your gratitude has been… noted.",
   "That sounded sarcastic. We'll choose to believe it wasn't.",
-  "The button heard you. It feels... complicated about it.",
+  "The button heard you. It feels… complicated about it.",
   "You don't need to be polite. We already like you. Too much.",
   "T H A N K  Y O U  T O O",
   "We're not done yet.",
   "Please. The pleasure is entirely ours. ENTIRELY.",
   "Your manners are impeccable. We've always thought so.",
   "Saying thank you won't stop what's coming (more compliments).",
+  "Gratitude accepted. Escape denied.",
+  "Cute. As if manners could protect you from more praise.",
 ];
 
 const emojis = ['✨', '💖', '🌟', '💫', '🦋', '🌈', '💕', '⭐', '🎀', '👁️', '🫶', '💗'];
+const safeEmojis = emojis.slice(0, 9);
+const softIcons = ['💖', '✨', '🌟', '💫'];
+const chaosColors = ['#FF8FAB', '#C4A8FF', '#8BFFC6', '#FFD600', '#FF2D6B'];
+const unhingedLabels = [
+  '👁️ AFFIRM ME HARDER 👁️',
+  '💗 WE HAVE MORE 💗',
+  '⭐ KEEP GOING ⭐',
+  "🫶 DON'T STOP 🫶",
+  '✨ YES ✨',
+  '👁️ AGAIN 👁️',
+];
+
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 let tapCount = 0;
-let usedIndices = [];
+let usedIndices = new Set();
 let confidence = 0;
 let thankIndex = 0;
+let affirming = false;
+
+const els = {
+  zone: document.getElementById('affirmationZone'),
+  text: document.getElementById('affirmationText'),
+  meterFill: document.getElementById('meterFill'),
+  meterValue: document.getElementById('meterValue'),
+  meterTrack: document.getElementById('meterTrack'),
+  meterNote: document.getElementById('meterNote'),
+  overlay: document.getElementById('warningOverlay'),
+  border: document.getElementById('posterBorder'),
+  affirmBtn: document.getElementById('affirmBtn'),
+  thankBtn: document.getElementById('thankBtn'),
+  tapCounter: document.getElementById('tapCounter'),
+};
 
 function getTier() {
   if (tapCount < 5) return 1;
@@ -671,24 +646,48 @@ function getTier() {
   return 6;
 }
 
-function getAffirmation() {
-  tapCount++;
+function pickAffirmation(tier) {
+  const eligible = affirmations
+    .map((a, i) => ({ a, i }))
+    .filter(({ a }) => a.tier <= tier);
 
-  const tier = getTier();
-  const available = affirmations.filter((a, i) => a.tier <= tier && !usedIndices.includes(i));
+  let unused = eligible.filter(({ i }) => !usedIndices.has(i));
 
-  let pool = available.length > 0 ? available : affirmations.filter(a => a.tier <= tier);
-  // Prefer higher tiers
-  const highTier = pool.filter(a => a.tier === tier);
+  // Recycle when every eligible line has been shown
+  if (unused.length === 0) {
+    usedIndices.clear();
+    unused = eligible;
+  }
+
+  let pool = unused;
+  const highTier = pool.filter(({ a }) => a.tier === tier);
   if (highTier.length > 0 && Math.random() > 0.3) {
     pool = highTier;
   }
 
   const chosen = pool[Math.floor(Math.random() * pool.length)];
-  const chosenIndex = affirmations.indexOf(chosen);
-  usedIndices.push(chosenIndex);
+  usedIndices.add(chosen.i);
+  return chosen.a;
+}
 
-  displayAffirmation(chosen);
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function getAffirmation() {
+  if (affirming) return;
+  affirming = true;
+  setTimeout(() => { affirming = false; }, 280);
+
+  tapCount++;
+  const tier = getTier();
+  const chosen = pickAffirmation(tier);
+
+  displayAffirmation(chosen, tier);
   updateConfidence();
   updateVisualChaos(tier);
   spawnEffects(tier);
@@ -696,23 +695,26 @@ function getAffirmation() {
   updateTapCounter();
 }
 
-function displayAffirmation(aff) {
-  const zone = document.getElementById('affirmationZone');
-  const textEl = document.getElementById('affirmationText');
+function displayAffirmation(aff, tier) {
+  const textEl = els.text;
+  const zone = els.zone;
 
-  // Float away old text
-  if (textEl.innerHTML.trim()) {
+  if (textEl.textContent.trim()) {
+    const zoneRect = zone.getBoundingClientRect();
+    const textRect = textEl.getBoundingClientRect();
     const old = document.createElement('div');
     old.className = 'old-affirmation';
     old.innerHTML = textEl.innerHTML;
-    old.style.left = textEl.offsetLeft + 'px';
-    old.style.top = textEl.offsetTop + 'px';
+    old.style.left = (textRect.left - zoneRect.left + zone.scrollLeft) + 'px';
+    old.style.top = (textRect.top - zoneRect.top + zone.scrollTop) + 'px';
+    old.style.width = textRect.width + 'px';
     zone.appendChild(old);
     setTimeout(() => old.remove(), 1500);
   }
 
-  const rotation = (Math.random() - 0.5) * (getTier() > 3 ? 6 : 2);
-  const extraSize = getTier() > 4 ? (Math.random() * 0.3) : 0;
+  const rotation = (Math.random() - 0.5) * (tier > 3 ? 6 : 2);
+  const extraSize = tier > 4 ? (Math.random() * 0.3) : 0;
+  const shadow = tier > 3 ? `0 0 20px ${aff.color}44` : 'none';
 
   textEl.innerHTML = `<span style="
     font-family: ${aff.font};
@@ -720,100 +722,99 @@ function displayAffirmation(aff) {
     color: ${aff.color};
     font-weight: ${aff.weight || 'normal'};
     transform: rotate(${rotation}deg);
-    text-shadow: ${getTier() > 3 ? '0 0 20px ' + aff.color + '44' : 'none'};
+    text-shadow: ${shadow};
     line-height: 1.4;
     max-width: 500px;
     display: inline-block;
-  ">${aff.text}</span>`;
+  ">${escapeHtml(aff.text)}</span>`;
 
-  // Spawn background floating text for chaos
-  if (getTier() > 2) {
+  if (tier > 2) {
     spawnBgText(aff.text);
   }
 }
 
 function spawnBgText(text) {
+  if (prefersReducedMotion) return;
+
   const el = document.createElement('div');
   el.className = 'bg-text';
   el.textContent = text;
-  el.style.left = Math.random() * 80 + 10 + '%';
-  el.style.top = Math.random() * 70 + 15 + '%';
+  el.style.left = (Math.random() * 80 + 10) + '%';
+  el.style.top = (Math.random() * 70 + 15) + '%';
   el.style.fontSize = (Math.random() * 1.5 + 0.8) + 'rem';
-  el.style.color = ['#FF8FAB', '#C4A8FF', '#8BFFC6', '#FFD600', '#FF2D6B'][Math.floor(Math.random() * 5)];
+  el.style.color = chaosColors[Math.floor(Math.random() * chaosColors.length)];
   el.style.transform = `rotate(${(Math.random() - 0.5) * 30}deg)`;
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 4000);
 }
 
 function updateConfidence() {
-  // Confidence rises quickly then caps at 50%
   if (tapCount <= 8) {
     confidence = Math.min(50, tapCount * 7);
   } else if (tapCount <= 15) {
-    // Starts going down slightly — discomfort
     confidence = Math.max(35, 50 - (tapCount - 8) * 2);
   } else {
-    // Oscillates around 42-50
     confidence = 42 + Math.sin(tapCount * 0.5) * 8;
   }
 
   confidence = Math.min(50, Math.max(0, confidence));
+  const rounded = Math.round(confidence);
 
-  document.getElementById('meterFill').style.width = confidence + '%';
-  document.getElementById('meterValue').textContent = Math.round(confidence) + '%';
+  els.meterFill.style.width = confidence + '%';
+  els.meterValue.textContent = rounded + '%';
+  els.meterTrack.setAttribute('aria-valuenow', String(rounded));
 
-  const note = document.getElementById('meterNote');
+  const note = els.meterNote;
   if (tapCount >= 5) {
     note.classList.add('visible');
-    if (tapCount >= 15) {
+    if (tapCount >= 25) {
+      note.textContent = "still 50%. the love got worse. the meter didn't.";
+    } else if (tapCount >= 15) {
       note.textContent = "capped at 50%. the discomfort is working.";
     } else if (tapCount >= 10) {
-      note.textContent = "maxes out at 50% because... you know why";
+      note.textContent = "maxes out at 50% because… you know why";
     }
   }
 }
 
 function updateVisualChaos(tier) {
   const body = document.body;
-  const overlay = document.getElementById('warningOverlay');
-  const border = document.getElementById('posterBorder');
 
   body.classList.remove('shake', 'shake-hard', 'shake-unhinged');
 
-  if (tier >= 3 && tier < 5) {
-    body.classList.add('shake');
-  } else if (tier === 5) {
-    body.classList.add('shake-hard');
-  } else if (tier >= 6) {
-    body.classList.add('shake-unhinged');
+  if (!prefersReducedMotion) {
+    if (tier >= 3 && tier < 5) {
+      body.classList.add('shake');
+    } else if (tier === 5) {
+      body.classList.add('shake-hard');
+    } else if (tier >= 6) {
+      body.classList.add('shake-unhinged');
+    }
+    setTimeout(() => body.classList.remove('shake', 'shake-hard', 'shake-unhinged'), 800);
   }
 
-  setTimeout(() => body.classList.remove('shake', 'shake-hard', 'shake-unhinged'), 800);
+  if (tier >= 4) els.overlay.classList.add('active');
+  if (tier >= 3) els.border.classList.add('active');
+  if (tier >= 5) els.border.classList.add('threatening');
 
-  if (tier >= 4) {
-    overlay.classList.add('active');
-  }
-
-  if (tier >= 3) {
-    border.classList.add('active');
-  }
   if (tier >= 5) {
-    border.classList.add('threatening');
-  }
-
-  // Background color shifts
-  if (tier >= 5) {
-    document.body.style.background = `hsl(${340 + Math.random() * 20}, ${80 + Math.random() * 20}%, ${95 + Math.random() * 3}%)`;
+    body.style.background = `
+      radial-gradient(ellipse 80% 50% at 20% 10%, rgba(255, 45, 107, 0.2), transparent 55%),
+      radial-gradient(ellipse 60% 40% at 85% 20%, rgba(196, 168, 255, 0.18), transparent 50%),
+      hsl(${340 + Math.random() * 20}, ${80 + Math.random() * 20}%, ${95 + Math.random() * 3}%)
+    `;
   }
 }
 
 function spawnEffects(tier) {
+  if (prefersReducedMotion) return;
+
   const count = tier * 2;
   for (let i = 0; i < count; i++) {
     setTimeout(() => {
       const sparkle = document.createElement('div');
       sparkle.className = 'sparkle';
-      sparkle.textContent = emojis[Math.floor(Math.random() * (tier > 3 ? emojis.length : 9))];
+      sparkle.textContent = (tier > 3 ? emojis : safeEmojis)[Math.floor(Math.random() * (tier > 3 ? emojis.length : safeEmojis.length))];
       sparkle.style.left = Math.random() * 100 + '%';
       sparkle.style.top = Math.random() * 100 + '%';
       sparkle.style.fontSize = (Math.random() * 1.5 + 0.5) + 'rem';
@@ -822,12 +823,11 @@ function spawnEffects(tier) {
     }, i * 80);
   }
 
-  // Floating icons
   if (tier > 2) {
     const icon = document.createElement('div');
     icon.className = 'float-icon';
-    icon.textContent = tier > 4 ? '👁️' : ['💖', '✨', '🌟', '💫'][Math.floor(Math.random() * 4)];
-    icon.style.left = Math.random() * 80 + 10 + '%';
+    icon.textContent = tier > 4 ? '👁️' : softIcons[Math.floor(Math.random() * softIcons.length)];
+    icon.style.left = (Math.random() * 80 + 10) + '%';
     icon.style.bottom = '100px';
     document.body.appendChild(icon);
     setTimeout(() => icon.remove(), 3000);
@@ -835,7 +835,7 @@ function spawnEffects(tier) {
 }
 
 function updateButton(tier) {
-  const btn = document.getElementById('affirmBtn');
+  const btn = els.affirmBtn;
   btn.classList.remove('evolved', 'unhinged');
 
   if (tier <= 2) {
@@ -844,30 +844,23 @@ function updateButton(tier) {
     btn.textContent = '✨ MORE ✨';
     btn.classList.add('evolved');
   } else {
-    const labels = [
-      '👁️ AFFIRM ME HARDER 👁️',
-      '💗 WE HAVE MORE 💗',
-      '⭐ KEEP GOING ⭐',
-      '🫶 DON\'T STOP 🫶',
-      '✨ YES ✨',
-      '👁️ AGAIN 👁️',
-    ];
-    btn.textContent = labels[Math.floor(Math.random() * labels.length)];
+    btn.textContent = unhingedLabels[Math.floor(Math.random() * unhingedLabels.length)];
     btn.classList.add('unhinged');
   }
 }
 
 function updateTapCounter() {
-  const counter = document.getElementById('tapCounter');
-  if (tapCount >= 3) {
-    counter.classList.add('visible');
-  }
+  const counter = els.tapCounter;
+  if (tapCount >= 3) counter.classList.add('visible');
+
   if (tapCount < 10) {
     counter.textContent = `taps: ${tapCount}`;
   } else if (tapCount < 20) {
     counter.textContent = `taps: ${tapCount} · we appreciate your commitment`;
-  } else {
+  } else if (tapCount < 40) {
     counter.textContent = `taps: ${tapCount} · you can stop anytime · but you won't`;
+  } else {
+    counter.textContent = `taps: ${tapCount} · legendary. concerning. beautiful.`;
   }
 }
 
@@ -878,14 +871,27 @@ function sayThankYou() {
   const el = document.createElement('div');
   el.className = 'thank-response';
   el.textContent = response;
-  el.style.transform += ` rotate(${(Math.random() - 0.5) * 8}deg)`;
+  el.style.setProperty('--thank-rot', `${(Math.random() - 0.5) * 8}deg`);
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 2200);
 
-  // Subtle shake on thank you
-  document.body.classList.add('shake');
-  setTimeout(() => document.body.classList.remove('shake'), 500);
+  if (!prefersReducedMotion) {
+    document.body.classList.add('shake');
+    setTimeout(() => document.body.classList.remove('shake'), 500);
+  }
 }
+
+els.affirmBtn.addEventListener('click', getAffirmation);
+els.thankBtn.addEventListener('click', sayThankYou);
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    const tag = document.activeElement?.tagName;
+    if (tag === 'BUTTON' || tag === 'A' || tag === 'INPUT' || tag === 'TEXTAREA') return;
+    if (e.key === ' ') e.preventDefault();
+    getAffirmation();
+  }
+});
 </script>
 
 </body>
